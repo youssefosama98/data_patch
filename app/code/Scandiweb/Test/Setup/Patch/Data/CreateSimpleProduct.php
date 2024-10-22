@@ -13,38 +13,39 @@ use Magento\Framework\App\State;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Api\Data\ProductInterface;
 
 class CreateSimpleProduct implements DataPatchInterface
 {
     /**
      * @var ProductInterfaceFactory
      */
-    private $productFactory;
+    protected $productFactory;
 
     /**
      * @var ProductRepositoryInterface
      */
-    private $productRepository;
+    protected $productRepository;
 
     /**
      * @var CategoryLinkManagementInterface
      */
-    private $categoryLinkManagement;
+    protected $categoryLinkManagement;
 
     /**
      * @var StoreManagerInterface
      */
-    private $storeManager;
+    protected $storeManager;
 
     /**
      * @var EavSetup
      */
-    private $eavSetup;
+    protected $eavSetup;
 
     /**
      * @var State
      */
-    private $appState;
+    protected $appState;
 
     /**
      * Constructor
@@ -75,9 +76,9 @@ class CreateSimpleProduct implements DataPatchInterface
     /**
      * Apply the data patch
      *
-     * @return $this
+     * @return void
      */
-    public function apply()
+    public function apply() : void
     {
         $this->appState->emulateAreaCode('adminhtml', [$this, 'createProduct'], [
             [
@@ -93,7 +94,7 @@ class CreateSimpleProduct implements DataPatchInterface
                 'category_ids' => [2]
             ]
         ]);
-        return $this;
+      
     }
 
     /**
@@ -102,7 +103,7 @@ class CreateSimpleProduct implements DataPatchInterface
      * @param array $attributes
      * @return void
      */
-    public function createProduct(array $attributes)
+    public function createProduct(array $attributes) : void
     {
         if ($this->productExists($attributes['sku'])) {
             return;
@@ -119,8 +120,9 @@ class CreateSimpleProduct implements DataPatchInterface
      * @param string $sku
      * @return bool
      */
-    private function productExists($sku)
+    private function productExists($sku) : bool
     {
+    
         return $this->productFactory->create()->getIdBySku($sku) !== null;
     }
 
@@ -128,20 +130,16 @@ class CreateSimpleProduct implements DataPatchInterface
      * Initialize a product with the given attributes
      *
      * @param array $attributes
-     * @return Product
+     * @return \Magento\Catalog\Api\Data\ProductInterface
      */
-    private function initializeProduct(array $attributes)
+    private function initializeProduct(array $attributes) : ProductInterface
     {
         $product = $this->productFactory->create();
-        $product->setSku($attributes['sku'])
-            ->setName($attributes['name'])
-            ->setTypeId($attributes['type_id'])
-            ->setPrice($attributes['price'])
-            ->setVisibility($attributes['visibility'])
-            ->setStatus($attributes['status'])
-            ->setStockData($attributes['stock_data'])
-            ->setAttributeSetId($attributes['attribute_set_id'])
-            ->setWebsiteIds($attributes['website_ids']);
+    
+        foreach ($attributes as $key => $value) {
+            $product->setData($key, $value);
+        }
+            
 
         return $product;
     }
@@ -153,7 +151,7 @@ class CreateSimpleProduct implements DataPatchInterface
      * @param array $categoryIds
      * @return void
      */
-    private function assignProductToCategories($sku, array $categoryIds)
+    private function assignProductToCategories($sku, array $categoryIds) : void
     {
         $this->categoryLinkManagement->assignProductToCategories($sku, $categoryIds);
     }
@@ -163,7 +161,7 @@ class CreateSimpleProduct implements DataPatchInterface
      *
      * @return array
      */
-    public static function getDependencies()
+    public static function getDependencies() : array
     {
         return [];
     }
@@ -173,7 +171,7 @@ class CreateSimpleProduct implements DataPatchInterface
      *
      * @return array
      */
-    public function getAliases()
+    public function getAliases() : array
     {
         return [];
     }
