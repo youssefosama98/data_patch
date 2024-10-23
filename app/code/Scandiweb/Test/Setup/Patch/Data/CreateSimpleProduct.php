@@ -94,7 +94,6 @@ class CreateSimpleProduct implements DataPatchInterface
                 'category_ids' => [2]
             ]
         ]);
-      
     }
 
     /**
@@ -122,7 +121,6 @@ class CreateSimpleProduct implements DataPatchInterface
      */
     private function productExists($sku) : bool
     {
-    
         return $this->productFactory->create()->getIdBySku($sku) !== null;
     }
 
@@ -130,7 +128,7 @@ class CreateSimpleProduct implements DataPatchInterface
      * Initialize a product with the given attributes
      *
      * @param array $attributes
-     * @return \Magento\Catalog\Api\Data\ProductInterface
+     * @return ProductInterface
      */
     private function initializeProduct(array $attributes) : ProductInterface
     {
@@ -140,7 +138,6 @@ class CreateSimpleProduct implements DataPatchInterface
             $product->setData($key, $value);
         }
             
-
         return $product;
     }
 
