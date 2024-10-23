@@ -20,32 +20,32 @@ class CreateSimpleProduct implements DataPatchInterface
     /**
      * @var ProductInterfaceFactory
      */
-    protected $productFactory;
+    protected ProductInterfaceFactory $productFactory;
 
     /**
      * @var ProductRepositoryInterface
      */
-    protected $productRepository;
+    protected ProductRepositoryInterface $productRepository;
 
     /**
      * @var CategoryLinkManagementInterface
      */
-    protected $categoryLinkManagement;
+    protected CategoryLinkManagementInterface $categoryLinkManagement;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected StoreManagerInterface $storeManager;
 
     /**
      * @var EavSetup
      */
-    protected $eavSetup;
+    protected EavSetup $eavSetup;
 
     /**
      * @var State
      */
-    protected $appState;
+    protected State $appState;
 
     /**
      * Constructor
