@@ -1,0 +1,30 @@
+# Copyright © Revton
+
+type Mutation @doc(description: "Marks order as viewed for authenticated users") {
+    markOrderAsViewed(order_id: String!):  MarkOrderViewedOutput @resolver(class: "\\Revton\\OrderView\\Model\\Resolver\\MarkOrderAsViewed")
+}
+
+type MarkOrderViewedOutput {
+    success: Boolean!
+    message: String
+    order: OrderDetails
+}
+
+type OrderDetails {
+    order_id: String
+    entity_id: Int
+    status: String
+    state: String
+    created_at: String
+    updated_at: String
+    grand_total: Float
+    subtotal: Float
+    tax_amount: Float
+    shipping_amount: Float
+    discount_amount: Float
+    currency_code: String
+    is_viewed: Int
+    customer_email: String
+    customer_firstname: String
+    customer_lastname: String
+}
